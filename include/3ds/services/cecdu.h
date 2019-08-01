@@ -140,3 +140,33 @@ Result cecduInit(void);
 
 /// Exits CECD:u
 void cecduExit(void);
+
+/**
+ * CECD::Open service function
+ *  Inputs:
+ *      0 : Header Code[0x000100C2]
+ *      1 : NCCH Program ID
+ *      2 : Path type
+ *      3 : File open flag
+ *      4 : Descriptor for process ID
+ *      5 : Placeholder for process ID
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : File size
+ **/
+Result CECDU_Open(u32 programID, CecDataPathType path, u32 flag, u32* size);
+
+/**
+ * CECD::Read service function
+ *  Inputs:
+ *      0 : Header Code[0x00020042]
+ *      1 : Buffer size (unused)
+ *      2 : Descriptor for mapping a write-only buffer in the target process
+ *      3 : Buffer address
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : Read size
+ *      3 : Descriptor for mapping a write-only buffer in the target process
+ *      4 : Buffer address
+ **/
+Result CECDU_Read(u32 bufferSize, void* buffer, u32* readSize);
