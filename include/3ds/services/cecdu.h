@@ -331,3 +331,62 @@ Result CECDU_SetData(u32 programID, u32 bufferSize, u32 option, const void* buff
  *      5 : Destination buffer address
  **/
 Result CECDU_ReadData(u32 destBufferSize, u32 infoType, u32 paramBufferSize, const void* paramBuffer, void* destBuffer);
+
+/**
+ * CECD::Start service function
+ *  Inputs:
+ *      0 : Header Code[0x000B0040]
+ *      1 : Command
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ **/
+Result CECDU_Start(CecCommand command);
+
+/**
+ * CECD::Stop service function
+ *  Inputs:
+ *      0 : Header Code[0x000C0040]
+ *      1 : Command
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ **/
+Result CECDU_Stop(CecCommand command);
+
+/**
+ * CECD::OpenAndWrite service function
+ *  Inputs:
+ *      0 : Header Code[0x00110104]
+ *      1 : Buffer size (unused)
+ *      2 : NCCH Program ID
+ *      3 : Path type
+ *      4 : File open flag
+ *      5 : Descriptor for process ID
+ *      6 : Placeholder for process ID
+ *      7 : Descriptor for mapping a read-only buffer in the target process
+ *      8 : Buffer address
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : Descriptor for mapping a read-only buffer in the target process
+ *      3 : Buffer address
+ **/
+Result CECDU_OpenAndWrite(u32 bufferSize, u32 programID, CecDataPathType path, u32 flag, const void* buffer);
+
+/**
+ * CECD::OpenAndRead service function
+ *  Inputs:
+ *      0 : Header Code[0x00120104]
+ *      1 : Buffer size (unused)
+ *      2 : NCCH Program ID
+ *      3 : Path type
+ *      4 : File open flag
+ *      5 : Descriptor for process ID
+ *      6 : Placeholder for process ID
+ *      7 : Descriptor for mapping a write-only buffer in the target process
+ *      8 : Buffer address
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : Toal bytes read
+ *      3 : Descriptor for mapping a write-only buffer in the target process
+ *      4 : Buffer address
+ **/
+Result CECDU_OpenAndRead(u32 bufferSize, u32 programID, CecDataPathType path, u32 flag, void* buffer, u32* readSize);

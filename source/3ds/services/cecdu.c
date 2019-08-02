@@ -219,3 +219,70 @@ Result CECDU_ReadData(u32 destBufferSize, u32 infoType, u32 paramBufferSize, con
 
     return (Result)cmdbuf[1];
 }
+
+Result CECDU_Start(CecCommand command)
+{
+    Result ret;
+    u32* cmdbuf = getThreadCommandBuffer();
+    cmdbuf[0] = IPC_MakeHeader(0xB, 1, 0);
+    cmdbuf[1] = command;
+
+    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+
+    return (Result)cmdbuf[1];
+}
+
+Result CECDU_Stop(CecCommand command)
+{
+    Result ret;
+    u32* cmdbuf = getThreadCommandBuffer();
+    cmdbuf[0] = IPC_MakeHeader(0xC, 1, 0);
+    cmdbuf[1] = command;
+
+    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+
+    return (Result)cmdbuf[1];
+}
+
+Result CECDU_OpenAndWrite(u32 bufferSize, u32 programID, CecDataPathType path, u32 flag, const void* buffer)
+{
+    Result ret;
+    u32* cmdbuf = getThreadCommandBuffer();
+    cmdbuf[0] = IPC_MakeHeader(0x11, 4, 4);
+    cmdbuf[1] = bufferSize;
+    cmdbuf[2] = programID;
+    cmdbuf[3] = path;
+    cmdbuf[4] = flag;
+    cmdbuf[5] = IPC_Desc_CurProcessId(); // do placeholder
+    cmdbuf[6] = 0; // placeholder
+    cmdbuf[7] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_R);
+    cmdbuf[8] = (u32)buffer;
+
+    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+
+    return (Result)cmdbuf[1];
+}
+
+Result CECDU_OpenAndRead(u32 bufferSize, u32 programID, CecDataPathType path, u32 flag, void* buffer, u32* readSize)
+{
+    Result ret;
+    u32* cmdbuf = getThreadCommandBuffer();
+    cmdbuf[0] = IPC_MakeHeader(0x12, 4, 4);
+    cmdbuf[1] = bufferSize;
+    cmdbuf[2] = programID;
+    cmdbuf[3] = path;
+    cmdbuf[4] = flag;
+    cmdbuf[5] = IPC_Desc_CurProcessId();
+    cmdbuf[6] = 0;
+    cmdbuf[7] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_W);
+    cmdbuf[8] = (u32)buffer;
+
+    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    ret = (Result)cmdbuf[1];
+
+    if(R_SUCCEEDED(ret))
+    {
+        if(readSize)*readSize = cmdbuf[2];
+    }
+    return ret;
+}
