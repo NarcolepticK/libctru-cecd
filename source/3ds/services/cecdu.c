@@ -244,6 +244,54 @@ Result CECDU_Stop(CecCommand command)
     return (Result)cmdbuf[1];
 }
 
+Result CECDU_GetCecdState(u32* state)
+{
+    Result ret;
+    u32* cmdbuf = getThreadCommandBuffer();
+    cmdbuf[0] = IPC_MakeHeader(0xE, 0, 0);
+
+    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    ret = (Result)cmdbuf[1];
+
+    if(R_SUCCEEDED(ret))
+    {
+        if(state)*state = cmdbuf[2];
+    }
+    return ret;
+}
+
+Result CECDU_GetCecInfoEventHandle(Handle* event)
+{
+    Result ret;
+    u32* cmdbuf = getThreadCommandBuffer();
+    cmdbuf[0] = IPC_MakeHeader(0xF, 0, 0);
+
+    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    ret = (Result)cmdbuf[1];
+
+    if(R_SUCCEEDED(ret))
+    {
+        if(event)*event = cmdbuf[3];
+    }
+    return ret;
+}
+
+Result CECDU_GetChangeStateEventHandle(Handle* event)
+{
+    Result ret;
+    u32* cmdbuf = getThreadCommandBuffer();
+    cmdbuf[0] = IPC_MakeHeader(0x10, 0, 0);
+
+    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    ret = (Result)cmdbuf[1];
+
+    if(R_SUCCEEDED(ret))
+    {
+        if(event)*event = cmdbuf[3];
+    }
+    return ret;
+}
+
 Result CECDU_OpenAndWrite(u32 bufferSize, u32 programID, CecDataPathType path, u32 flag, const void* buffer)
 {
     Result ret;

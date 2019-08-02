@@ -353,6 +353,36 @@ Result CECDU_Start(CecCommand command);
 Result CECDU_Stop(CecCommand command);
 
 /**
+ * GetCecdState service function
+ *  Inputs:
+ *      0: Header Code[0x000E0000]
+ *  Outputs:
+ *      1: ResultCode
+ *      2: CecdState
+ **/
+Result CECDU_GetCecdState(u32* state);
+
+/**
+ * GetCecInfoEventHandle service function
+ *  Inputs:
+ *      0: Header Code[0x000F0000]
+ *  Outputs:
+ *      1: ResultCode
+ *      3: Event Handle
+ **/
+Result CECDU_GetCecInfoEventHandle(Handle* event);
+
+/**
+ * GetChangeStateEventHandle service function
+ *  Inputs:
+ *      0: Header Code[0x00100000]
+ *  Outputs:
+ *      1: ResultCode
+ *      3: Event Handle
+ **/
+Result CECDU_GetChangeStateEventHandle(Handle* event);
+
+/**
  * CECD::OpenAndWrite service function
  *  Inputs:
  *      0 : Header Code[0x00110104]
