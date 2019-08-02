@@ -114,3 +114,57 @@ Result CECDU_ReadMessageWithHMAC(u32 programID, bool outBox, u32 idSize, u32 buf
     }
     return ret;
 }
+
+Result CECDU_Write(u32 bufferSize, const void* buffer)
+{
+    Result ret;
+    u32* cmdbuf = getThreadCommandBuffer();
+    cmdbuf[0] = IPC_MakeHeader(0x5, 1, 2);
+    cmdbuf[1] = bufferSize;
+    cmdbuf[2] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_R);
+    cmdbuf[3] = (u32)buffer;
+
+    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+
+    return (Result)cmdbuf[1];
+}
+
+Result CECDU_WriteMessage(u32 programID, bool outBox, u32 idSize, u32 bufferSize, const void* buffer, const void* messageID)
+{
+    Result ret;
+    u32* cmdbuf = getThreadCommandBuffer();
+    cmdbuf[0] = IPC_MakeHeader(0x6, 4, 4);
+    cmdbuf[1] = programID;
+    cmdbuf[2] = outBox;
+    cmdbuf[3] = 8;
+    cmdbuf[4] = bufferSize;
+    cmdbuf[5] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_R);
+    cmdbuf[6] = (u32)buffer;
+    cmdbuf[7] = IPC_Desc_Buffer(8, IPC_BUFFER_RW);
+    cmdbuf[8] = (u32)messageID;
+
+    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+
+    return (Result)cmdbuf[1];
+}
+
+Result CECDU_WriteMessageWithHMAC(u32 programID, bool outBox, u32 idSize, u32 bufferSize, const void* buffer, const void* hmacKey, const void* messageID)
+{
+    Result ret;
+    u32* cmdbuf = getThreadCommandBuffer();
+    cmdbuf[0] = IPC_MakeHeader(0x7, 4, 6);
+    cmdbuf[1] = programID;
+    cmdbuf[2] = outBox;
+    cmdbuf[3] = idSize;
+    cmdbuf[4] = bufferSize;
+    cmdbuf[5] = IPC_Desc_Buffer(idSize, IPC_BUFFER_R);
+    cmdbuf[6] = (u32)buffer;
+    cmdbuf[7] = IPC_Desc_Buffer(0x20, IPC_BUFFER_R); // 32 byte key size
+    cmdbuf[8] = (u32)hmacKey;
+    cmdbuf[9] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_RW);
+    cmdbuf[10] = (u32)messageID;
+
+    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+
+    return (Result)cmdbuf[1];
+}
