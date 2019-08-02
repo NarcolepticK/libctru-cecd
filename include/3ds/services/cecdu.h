@@ -353,6 +353,21 @@ Result CECDU_Start(CecCommand command);
 Result CECDU_Stop(CecCommand command);
 
 /**
+ * CECD::GetCecInfoBuffer service function
+ *  Inputs:
+ *      0 : Header Code[0x000D0082]
+ *      1 : Buffer size
+ *      2 : unknown
+ *      3 : Descriptor for mapping a write-only buffer in the target process
+ *      4 : Destination buffer address
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *    2-3 : MappedBuffer
+ **/
+Result CECDU_GetCecInfoBuffer(u32 bufferSize, u32 unknown, void* buffer);
+
+
+/**
  * GetCecdState service function
  *  Inputs:
  *      0: Header Code[0x000E0000]
@@ -420,3 +435,27 @@ Result CECDU_OpenAndWrite(u32 bufferSize, u32 programID, CecDataPathType path, u
  *      4 : Buffer address
  **/
 Result CECDU_OpenAndRead(u32 bufferSize, u32 programID, CecDataPathType path, u32 flag, void* buffer, u32* readSize);
+
+/**
+ * CECD::GetEventLog service function
+ *  Inputs:
+ *      0 : Header Code[0x001E0082]
+ *      1 : unknown
+ *      2 : unknown
+ *      3 : buffer descriptor
+ *      4 : buffer address
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : unknown
+ **/
+Result CECDU_GetEventLog(u32 unknown, u32 unknown2, void* buffer, u32* unknownRet);
+
+/**
+ * CECD::GetEventLogStart service function
+ *  Inputs:
+ *      0 : Header Code[0x001F0000]
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : unknown
+ **/
+Result CECDU_GetEventLogStart(u32* unknownRet);
