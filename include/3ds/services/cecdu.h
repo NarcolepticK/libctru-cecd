@@ -278,3 +278,56 @@ Result CECDU_WriteMessage(u32 programID, bool outBox, u32 idSize, u32 bufferSize
  *      7 : Message ID address
  **/
 Result CECDU_WriteMessageWithHMAC(u32 programID, bool outBox, u32 idSize, u32 bufferSize, const void* buffer, const void* hmac, const void* messageID);
+
+/**
+ * CECD::Delete service function
+ *  Inputs:
+ *      0 : Header Code[0x00080102]
+ *      1 : NCCH Program ID
+ *      2 : Path type
+ *      3 : bool is_outbox
+ *      4 : Message ID size (unused)
+ *      5 : Descriptor for mapping a read-only buffer in the target process
+ *      6 : Message ID address
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : Descriptor for mapping a read-only buffer in the target process
+ *      3 : Message ID address
+ **/
+Result CECDU_Delete(u32 programID, CecDataPathType path, bool outBox, u32 idSize, const void* messageID);
+
+/**
+ * CECD::SetData service function
+ *  Inputs:
+ *      0 : Header Code[0x000900C2]
+ *      1 : NCCH Program ID
+ *      2 : Buffer Size
+ *      3 : Option
+ *      4 : Descriptor for mapping a read-only buffer in the target process
+ *      5 : Buffer address
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : Descriptor for mapping a read-only buffer in the target process
+ *      3 : Buffer address
+ **/
+Result CECDU_SetData(u32 programID, u32 bufferSize, u32 option, const void* buffer);
+
+/**
+ * CECD::ReadData service function
+ *  Inputs:
+ *      0 : Header Code[0x000A00C4]
+ *      1 : Destination buffer size (unused)
+ *      2 : Info type
+ *      3 : Param buffer size (unused)
+ *      4 : Descriptor for mapping a read-only buffer in the target process
+ *      5 : Param buffer address
+ *      6 : Descriptor for mapping a write-only buffer in the target process
+ *      7 : Destination buffer address
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : Descriptor for mapping a read-only buffer in the target process
+ *      3 : Param buffer address
+ *      4 : Descriptor for mapping a write-only buffer in the target process
+ *      5 : Destination buffer address
+ **/
+Result CECDU_ReadData(u32 destBufferSize, u32 infoType, u32 paramBufferSize, const void* paramBuffer, void* destBuffer);
