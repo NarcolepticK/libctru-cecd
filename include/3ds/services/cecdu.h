@@ -170,3 +170,51 @@ Result CECDU_Open(u32 programID, CecDataPathType path, u32 flag, u32* size);
  *      4 : Buffer address
  **/
 Result CECDU_Read(u32 bufferSize, void* buffer, u32* readSize);
+
+/**
+ * CECD::ReadMessage service function
+ *  Inputs:
+ *      0 : Header Code[0x00030104]
+ *      1 : NCCH Program ID
+ *      2 : bool is_outbox
+ *      3 : Message ID size (unused, always 8)
+ *      4 : Buffer size (unused)
+ *      5 : Descriptor for mapping a read-only buffer in the target process
+ *      6 : Message ID address
+ *      7 : Descriptor for mapping a write-only buffer in the target process
+ *      8 : Buffer address
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : Read size
+ *      3 : Descriptor for mapping a read-only buffer in the target process
+ *      4 : Message ID address
+ *      5 : Descriptor for mapping a write-only buffer in the target process
+ *      6 : Buffer address
+ **/
+Result CECDU_ReadMessage(u32 programID, bool outBox, u32 idSize, u32 bufferSize, const void* messageID, void* buffer, u32* readSize);
+
+/**
+ * CECD::ReadMessageWithHMAC service function
+ *  Inputs:
+ *      0 : Header Code[0x00040106]
+ *      1 : NCCH Program ID
+ *      2 : bool is_outbox
+ *      3 : Message ID size(unused, always 8)
+ *      4 : Buffer size(unused)
+ *      5 : Descriptor for mapping a read-only buffer in the target process
+ *      6 : Message ID address
+ *      7 : Descriptor for mapping a read-only buffer in the target process
+ *      8 : HMAC key address
+ *      9 : Descriptor for mapping a write-only buffer in the target process
+ *     10 : Buffer address
+ *  Outputs:
+ *      1 : Result of function, 0 on success, otherwise error code
+ *      2 : Read size
+ *      3 : Descriptor for mapping a read-only buffer in the target process
+ *      4 : Message ID address
+ *      5 : Descriptor for mapping a read-only buffer in the target process
+ *      6 : HMAC key address
+ *      7 : Descriptor for mapping a write-only buffer in the target process
+ *      8 : Buffer address
+ **/
+Result CECDU_ReadMessageWithHMAC(u32 programID, bool outBox, u32 idSize, u32 bufferSize, const void* messageID, const void* hmacKey, void* buffer, u32* readSize);
