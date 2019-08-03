@@ -4,25 +4,27 @@
 #include <3ds/synchronization.h>
 #include <3ds/ipc.h>
 
-static Handle cecduHandle;
-static int cecduRefCount;
+static Handle cecdHandle;
+static int cecdRefCount;
 
-Result cecduInit(void)
+Result cecdInit(void)
 {
     Result ret;
 
-    if (AtomicPostIncrement(&cecduRefCount)) return 0;
+    if (AtomicPostIncrement(&cecdRefCount)) return 0;
 
-    ret = srvGetServiceHandle(&cecduHandle, "cecd:u");
-    if (R_FAILED(ret)) AtomicDecrement(&cecduRefCount);
+    ret = srvGetServiceHandle(&cecdHandle, "cecd:u");
+    if(R_FAILED(ret)) ret = srvGetServiceHandle(&cecdHandle, "cecd:s");
+    if(R_FAILED(ret)) ret = srvGetServiceHandle(&cecdHandle, "cecd:ndm");
+    if(R_FAILED(ret)) AtomicDecrement(&cecdRefCount);
 
     return ret;
 }
 
-void cecduExit(void)
+void cecdExit(void)
 {
-	if (AtomicDecrement(&cecduRefCount)) return;
-	svcCloseHandle(cecduHandle);
+	if (AtomicDecrement(&cecdRefCount)) return;
+	svcCloseHandle(cecdHandle);
 }
 
 Result CECDU_Open(u32 programID, CecDataPathType path, u32 flag, u32* size)
@@ -36,7 +38,7 @@ Result CECDU_Open(u32 programID, CecDataPathType path, u32 flag, u32* size)
     cmdbuf[4] = IPC_Desc_CurProcessId(); // do placeholder
     cmdbuf[5] = 0; // placeholder
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
     ret = (Result)cmdbuf[1];
 
     if(R_SUCCEEDED(ret))
@@ -55,7 +57,7 @@ Result CECDU_Read(u32 bufferSize, void* buffer, u32* readSize)
     cmdbuf[2] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_W);
     cmdbuf[3] = (u32)buffer;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
     ret = (Result)cmdbuf[1];
 
     if(R_SUCCEEDED(ret))
@@ -79,7 +81,7 @@ Result CECDU_ReadMessage(u32 programID, bool outBox, u32 idSize, u32 bufferSize,
     cmdbuf[7] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_W);
     cmdbuf[8] = (u32)buffer;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
     ret = (Result)cmdbuf[1];
 
     if(R_SUCCEEDED(ret))
@@ -105,7 +107,7 @@ Result CECDU_ReadMessageWithHMAC(u32 programID, bool outBox, u32 idSize, u32 buf
     cmdbuf[9] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_W);
     cmdbuf[10] = (u32)buffer;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
     ret = (Result)cmdbuf[1];
 
     if(R_SUCCEEDED(ret))
@@ -124,7 +126,7 @@ Result CECDU_Write(u32 bufferSize, const void* buffer)
     cmdbuf[2] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_R);
     cmdbuf[3] = (u32)buffer;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
 
     return (Result)cmdbuf[1];
 }
@@ -143,7 +145,7 @@ Result CECDU_WriteMessage(u32 programID, bool outBox, u32 idSize, u32 bufferSize
     cmdbuf[7] = IPC_Desc_Buffer(8, IPC_BUFFER_RW);
     cmdbuf[8] = (u32)messageID;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
 
     return (Result)cmdbuf[1];
 }
@@ -164,7 +166,7 @@ Result CECDU_WriteMessageWithHMAC(u32 programID, bool outBox, u32 idSize, u32 bu
     cmdbuf[9] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_RW);
     cmdbuf[10] = (u32)messageID;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
 
     return (Result)cmdbuf[1];
 }
@@ -181,7 +183,7 @@ Result CECDU_Delete(u32 programID, CecDataPathType path, bool outBox, u32 idSize
     cmdbuf[5] = IPC_Desc_Buffer(idSize, IPC_BUFFER_R);
     cmdbuf[6] = (u32)messageID;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
 
     return (Result)cmdbuf[1];
 }
@@ -197,7 +199,7 @@ Result CECDU_SetData(u32 programID, u32 bufferSize, u32 option, const void* buff
     cmdbuf[4] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_R);
     cmdbuf[5] = (u32)buffer;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
 
     return (Result)cmdbuf[1];
 }
@@ -215,7 +217,7 @@ Result CECDU_ReadData(u32 destBufferSize, u32 infoType, u32 paramBufferSize, con
     cmdbuf[6] = IPC_Desc_Buffer(destBufferSize, IPC_BUFFER_W);
     cmdbuf[7] = (u32)destBuffer;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
 
     return (Result)cmdbuf[1];
 }
@@ -227,7 +229,7 @@ Result CECDU_Start(CecCommand command)
     cmdbuf[0] = IPC_MakeHeader(0xB, 1, 0);
     cmdbuf[1] = command;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
 
     return (Result)cmdbuf[1];
 }
@@ -239,7 +241,7 @@ Result CECDU_Stop(CecCommand command)
     cmdbuf[0] = IPC_MakeHeader(0xC, 1, 0);
     cmdbuf[1] = command;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
 
     return (Result)cmdbuf[1];
 }
@@ -254,7 +256,7 @@ Result CECDU_GetCecInfoBuffer(u32 bufferSize, u32 unknown, void* buffer)
     cmdbuf[3] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_W);
     cmdbuf[4] = (u32)buffer;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
 
     return (Result)cmdbuf[1];
 }
@@ -265,7 +267,7 @@ Result CECDU_GetCecdState(u32* state)
     u32* cmdbuf = getThreadCommandBuffer();
     cmdbuf[0] = IPC_MakeHeader(0xE, 0, 0);
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
     ret = (Result)cmdbuf[1];
 
     if(R_SUCCEEDED(ret))
@@ -281,7 +283,7 @@ Result CECDU_GetCecInfoEventHandle(Handle* event)
     u32* cmdbuf = getThreadCommandBuffer();
     cmdbuf[0] = IPC_MakeHeader(0xF, 0, 0);
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
     ret = (Result)cmdbuf[1];
 
     if(R_SUCCEEDED(ret))
@@ -297,7 +299,7 @@ Result CECDU_GetChangeStateEventHandle(Handle* event)
     u32* cmdbuf = getThreadCommandBuffer();
     cmdbuf[0] = IPC_MakeHeader(0x10, 0, 0);
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
     ret = (Result)cmdbuf[1];
 
     if(R_SUCCEEDED(ret))
@@ -321,7 +323,7 @@ Result CECDU_OpenAndWrite(u32 bufferSize, u32 programID, CecDataPathType path, u
     cmdbuf[7] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_R);
     cmdbuf[8] = (u32)buffer;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
 
     return (Result)cmdbuf[1];
 }
@@ -340,7 +342,7 @@ Result CECDU_OpenAndRead(u32 bufferSize, u32 programID, CecDataPathType path, u3
     cmdbuf[7] = IPC_Desc_Buffer(bufferSize, IPC_BUFFER_W);
     cmdbuf[8] = (u32)buffer;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
     ret = (Result)cmdbuf[1];
 
     if(R_SUCCEEDED(ret))
@@ -360,7 +362,7 @@ Result CECDU_GetEventLog(u32 unknown, u32 unknown2, void* buffer, u32* unknownRe
     cmdbuf[3] = IPC_Desc_Buffer(unknown, IPC_BUFFER_RW);
     cmdbuf[4] = (u32)buffer;
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
     ret = (Result)cmdbuf[1];
 
     if(R_SUCCEEDED(ret))
@@ -376,7 +378,7 @@ Result CECDU_GetEventLogStart(u32* unknownRet)
     u32* cmdbuf = getThreadCommandBuffer();
     cmdbuf[0] = IPC_MakeHeader(0x1F, 0, 0);
 
-    if (R_FAILED(ret = svcSendSyncRequest(cecduHandle))) return ret;
+    if(R_FAILED(ret = svcSendSyncRequest(cecdHandle))) return ret;
     ret = (Result)cmdbuf[1];
 
     if(R_SUCCEEDED(ret))

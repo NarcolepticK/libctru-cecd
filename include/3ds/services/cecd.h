@@ -10,47 +10,47 @@
 
 /// Enum value that corresponds with a specific file or directory
 typedef enum {
-    CEC_PATH_MBOX_LIST = 1,
-    CEC_PATH_MBOX_INFO = 2,
-    CEC_PATH_INBOX_INFO = 3,
-    CEC_PATH_OUTBOX_INFO = 4,
-    CEC_PATH_OUTBOX_INDEX = 5,
-    CEC_PATH_INBOX_MSG = 6,
-    CEC_PATH_OUTBOX_MSG = 7,
-    CEC_PATH_ROOT_DIR = 10,
-    CEC_PATH_MBOX_DIR = 11,
-    CEC_PATH_INBOX_DIR = 12,
-    CEC_PATH_OUTBOX_DIR = 13,
-    CEC_MBOX_DATA = 100,
-    CEC_MBOX_ICON = 101,
-    CEC_MBOX_TITLE = 110,
-    CEC_MBOX_PROGRAM_ID = 150
+    CEC_PATH_MBOX_LIST = 1,    /// data:/CEC/MBoxList____
+    CEC_PATH_MBOX_INFO = 2,    /// data:/CEC/<id>/MBoxInfo____
+    CEC_PATH_INBOX_INFO = 3,   /// data:/CEC/<id>/InBox___/BoxInfo_____
+    CEC_PATH_OUTBOX_INFO = 4,  /// data:/CEC/<id>/OutBox__/BoxInfo_____
+    CEC_PATH_OUTBOX_INDEX = 5, /// data:/CEC/<id>/OutBox__/OBIndex_____
+    CEC_PATH_INBOX_MSG = 6,    /// data:/CEC/<id>/InBox___/_<message_id>
+    CEC_PATH_OUTBOX_MSG = 7,   /// data:/CEC/<id>/OutBox__/_<message_id>
+    CEC_PATH_ROOT_DIR = 10,    /// data:/CEC
+    CEC_PATH_MBOX_DIR = 11,    /// data:/CEC/<id>
+    CEC_PATH_INBOX_DIR = 12,   /// data:/CEC/<id>/InBox___
+    CEC_PATH_OUTBOX_DIR = 13,  /// data:/CEC/<id>/OutBox__
+    CEC_MBOX_DATA = 100,       /// data:/CEC/<id>/MBoxData.0<i-100>
+    CEC_MBOX_ICON = 101,       /// data:/CEC/<id>/MBoxData.001
+    CEC_MBOX_TITLE = 110,      /// data:/CEC/<id>/MBoxData.010
+    CEC_MBOX_PROGRAM_ID = 150  /// data:/CEC/<id>/MBoxData.050
 } CecDataPathType;
 
 /// Commands used with Start and Stop
 typedef enum {
-    CEC_COMMAND_NONE,
-    CEC_COMMAND_START,
-    CEC_COMMAND_RESET_START,
-    CEC_COMMAND_READYSCAN,
-    CEC_COMMAND_READYSCANWAIT,
-    CEC_COMMAND_STARTSCAN,
-    CEC_COMMAND_RESCAN,
-    CEC_COMMAND_NDM_RESUME,
-    CEC_COMMAND_NDM_SUSPEND,
-    CEC_COMMAND_NDM_SUSPEND_IMMEDIATE,
-    CEC_COMMAND_STOPWAIT,
-    CEC_COMMAND_STOP,
-    CEC_COMMAND_STOP_FORCE,
-    CEC_COMMAND_STOP_FORCE_WAIT,
-    CEC_COMMAND_RESET_FILTER,
-    CEC_COMMAND_DAEMON_STOP,
-    CEC_COMMAND_DAEMON_START,
-    CEC_COMMAND_EXIT,
-    CEC_COMMAND_OVER_BOSS,
-    CEC_COMMAND_OVER_BOSS_FORCE,
-    CEC_COMMAND_OVER_BOSS_FORCE_WAIT,
-    CEC_COMMAND_END
+    CEC_COMMAND_NONE = 0,
+    CEC_COMMAND_START = 1,
+    CEC_COMMAND_RESET_START = 2,
+    CEC_COMMAND_READYSCAN = 3,
+    CEC_COMMAND_READYSCANWAIT = 4,
+    CEC_COMMAND_STARTSCAN = 5,
+    CEC_COMMAND_RESCAN = 6,
+    CEC_COMMAND_NDM_RESUME = 7,
+    CEC_COMMAND_NDM_SUSPEND = 8,
+    CEC_COMMAND_NDM_SUSPEND_IMMEDIATE = 9,
+    CEC_COMMAND_STOPWAIT = 10,
+    CEC_COMMAND_STOP = 11,
+    CEC_COMMAND_STOP_FORCE = 12,
+    CEC_COMMAND_STOP_FORCE_WAIT = 13,
+    CEC_COMMAND_RESET_FILTER = 14,
+    CEC_COMMAND_DAEMON_STOP = 15,
+    CEC_COMMAND_DAEMON_START = 16,
+    CEC_COMMAND_EXIT = 17,
+    CEC_COMMAND_OVER_BOSS = 18,
+    CEC_COMMAND_OVER_BOSS_FORCE = 19,
+    CEC_COMMAND_OVER_BOSS_FORCE_WAIT = 20,
+    CEC_COMMAND_END = 21
 } CecCommand;
 
 typedef enum {
@@ -59,6 +59,36 @@ typedef enum {
     CEC_CREATE = BIT(3),
     CEC_CHECK = BIT(4)
 } CecOpenFlag;
+
+typedef enum {
+    CEC_STATE_NONE = 0,
+    CEC_STATE_INIT = 1,
+    CEC_STATE_WIRELESS_PARAM_SETUP = 2,
+    CEC_STATE_WIRELESS_READY = 3,
+    CEC_STATE_WIRELESS_START_CONFIG = 4,
+    CEC_STATE_SCAN = 5,
+    CEC_STATE_SCANNING = 6,
+    CEC_STATE_CONNECT = 7,
+    CEC_STATE_CONNECTING = 8,
+    CEC_STATE_CONNECTED = 9,
+    CEC_STATE_CONNECT_TCP = 10,
+    CEC_STATE_CONNECTING_TCP = 11,
+    CEC_STATE_CONNECTED_TCP = 12,
+    CEC_STATE_NEGOTIATION = 13,
+    CEC_STATE_SEND_RECV_START = 14,
+    CEC_STATE_SEND_RECV_INIT = 15,
+    CEC_STATE_SEND_READY = 16,
+    CEC_STATE_RECEIVE_READY = 17,
+    CEC_STATE_RECEIVE = 18,
+    CEC_STATE_CONNECTION_FINISH_TCP = 19,
+    CEC_STATE_CONNECTION_FINISH = 20,
+    CEC_STATE_SEND_POST = 21,
+    CEC_STATE_RECEIVE_POST = 22,
+    CEC_STATE_FINISHING = 23,
+    CEC_STATE_FINISH = 24,
+    CEC_STATE_OVER_BOSS = 25,
+    CEC_STATE_IDLE = 26
+} CecState;
 
 typedef struct {
     u8 data[8];
@@ -135,11 +165,11 @@ typedef struct {
 } CecMessageHeader;
 //static_assert(sizeof(CecMessageHeader) == 0x70, "CecMessageHeader struct has incorrect size.");
 
-/// Initializes CECD:u
-Result cecduInit(void);
+/// Initializes CECD
+Result cecdInit(void);
 
-/// Exits CECD:u
-void cecduExit(void);
+/// Exits CECD
+void cecdExit(void);
 
 /**
  * CECD::Open service function
