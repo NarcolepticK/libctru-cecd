@@ -5,6 +5,8 @@ Requires existing devkitPro install
 
 This aims to fill in the missing service code, and enable CECTool to function.
 
+When it is more complete it should be added into libctru, but in the meantime this will work.
+
 ## CECD:u Functions
 - Open
 - Read
