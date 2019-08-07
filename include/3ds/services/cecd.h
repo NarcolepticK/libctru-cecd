@@ -1,6 +1,6 @@
 /**
- * @file cecdu.h
- * @brief CECD:u service.
+ * @file cecd.h
+ * @brief CECD service.
  */
 #pragma once
 
@@ -105,7 +105,6 @@ typedef struct {
     u32 maxBatchSize;
     u32 maxMessageSize;
 } CecBoxInfoHeader;
-//static_assert(sizeof(CecBoxInfoHeader) == 0x20, "CecBoxInfoHeader struct has incorrect size.");
 
 typedef struct
 {
@@ -115,7 +114,6 @@ typedef struct
     u32 numBoxes;
     u8 boxNames[24][16]; // 12 used, but space for 24
 } CecMBoxListHeader;
-//static_assert(sizeof(CecMBoxListHeader) == 0x18C, "CecMBoxListHeader struct has incorrect size.");
 
 
 typedef struct {
@@ -123,7 +121,6 @@ typedef struct {
     u16 padding;
     u32 numMessages;
 } CecOBIndexHeader;
-//static_assert(sizeof(CecOBIndexHeader) == 0x08, "OBIndexHeader struct has incorrect size.");
 
 typedef struct {
     u32 year;
@@ -135,7 +132,6 @@ typedef struct {
     u8 second;
     u16 millisecond;
 } CecTimestamp;
-//static_assert(sizeof(CecTimestamp) == 0x0C, "Timestamp struct has incorrect size.");
 
 typedef struct {
     u16 magic; // 0x6363 'cc'
@@ -153,8 +149,6 @@ typedef struct {
     u32 padding5;
     CecTimestamp unknownTime;
 } CecMBoxInfoHeader;
-//static_assert(sizeof(CecMBoxInfoHeader) == 0x60, "CecMBoxInfoHeader struct has incorrect size.");
-
 
 typedef struct {
     u16 magic; // 0x6060 ``
@@ -182,7 +176,6 @@ typedef struct {
     u8 forwardCount;
     u16 userData;
 } CecMessageHeader;
-//static_assert(sizeof(CecMessageHeader) == 0x70, "CecMessageHeader struct has incorrect size.");
 
 /// Initializes CECD
 Result cecdInit(void);

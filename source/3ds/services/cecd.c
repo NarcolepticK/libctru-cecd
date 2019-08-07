@@ -23,8 +23,8 @@ Result cecdInit(void)
 
 void cecdExit(void)
 {
-	if (AtomicDecrement(&cecdRefCount)) return;
-	svcCloseHandle(cecdHandle);
+    if (AtomicDecrement(&cecdRefCount)) return;
+    svcCloseHandle(cecdHandle);
 }
 
 Result CECDU_Open(u32 programID, CecDataPathType path, u32 flag, u32* size)
