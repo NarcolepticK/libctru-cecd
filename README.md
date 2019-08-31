@@ -3,11 +3,11 @@ CECD service code for libctru
 
 Requires existing devkitPro install
 
-This aims to fill in the missing service code, and enable CECTool to function.
+This aims to fill in the missing service code, and enable [CECTool](https://github.com/NarcolepticK/CECTool) to function.
 
-When it is more complete it should be added into libctru, but in the meantime this will work.
+When it is more complete it should be added into libctru, but in the meantime this will do.
 
-## CECD:u Functions
+### CECD:u Functions
 - Open
 - Read
 - ReadMessage
@@ -26,7 +26,7 @@ When it is more complete it should be added into libctru, but in the meantime th
 - OpenAndWrite
 - OpenAndRead
 
-## Partially Supported
+### Partially Supported
 - GetCecInfoBuffer
 - GetEventLog
 - GetEventLogStart
