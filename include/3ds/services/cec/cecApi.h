@@ -4,7 +4,7 @@
  */
 #pragma once
 
-namespace cec {
+#include <3ds/types.h>
 
 /// Enum value that corresponds with a specific file or directory
 typedef enum {
@@ -174,4 +174,3 @@ typedef struct {
     u8 forwardCount;
     u16 userData;
 } CecMessageHeader;
-} // namespace cec
