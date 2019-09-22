@@ -4,7 +4,7 @@ CECD service code for libctru
 ## Setup
 Requires existing devkitPro install.
 
-Add **libctru-cecd/source/3ds/services/cec** to your makefile SOURCES, and **libctru-cecd/include/3ds/services/cec** and **libctru-cecd/include/** to your INCLUDES to compile. Then **#include "3ds/services/cecd.h** to start using.
+Add **libctru-cecd/source/3ds/services/cec** to your makefile SOURCES, and **libctru-cecd/include/3ds/services/cec** and **libctru-cecd/include/** to your INCLUDES to compile. Then **#include "3ds/services/cecd.h"** to start using.
 
 ## Goal
 This aims to fill in the missing service code, and enable [CECTool](https://github.com/NarcolepticK/CECTool) to function.
