@@ -13,43 +13,43 @@ When it is more complete it should be added into libctru, but in the meantime th
 
 ## Supported Functions
 - **cecd:u**
-  - Open
-  - Read
-  - ReadMessage
-  - ReadMessageWithHMAC
-  - Write
-  - WriteMessage
-  - WriteMessageWithHMAC
-  - Delete
-  - SetData
-  - ReadData
-  - Start
-  - Stop
-  - GetCecInfoBuffer
-  - GetCecdState
-  - GetCecInfoEventHandle
-  - GetChangeStateEventHandle
-  - OpenAndWrite
-  - OpenAndRead
-  - GetEventLog
-  - GetEventLogStart
+    - Open
+    - Read
+    - ReadMessage
+    - ReadMessageWithHMAC
+    - Write
+    - WriteMessage
+    - WriteMessageWithHMAC
+    - Delete
+    - SetData
+    - ReadData
+    - Start
+    - Stop
+    - GetCecInfoBuffer
+    - GetCecdState
+    - GetCecInfoEventHandle
+    - GetChangeStateEventHandle
+    - OpenAndWrite
+    - OpenAndRead
+    - GetEventLog
+    - GetEventLogStart
 
 ## Todo
 - Implement
-  - cecd:ndm
-  - cecd:s/CecSys
-  - CecControl
-  - CecControlSys
-  - MessageId
-  - Message
-  - MessageBox
-  - And whatever else I may still find
+    - cecd:ndm
+    - cecd:s/CecSys
+    - CecControl
+    - CecControlSys
+    - MessageId
+    - Message
+    - MessageBox
+    - And whatever else I may still find
 
 ## Usage
 `cecdInit()` and `cecdExit()` must be called to initialize and finalize CecControl. They default to using the cecd:u service.
 
-### Api calls available:
-```
+### Api calls available
+```C
 cecdInit(void);
 cecdExit(void);
 
