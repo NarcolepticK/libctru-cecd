@@ -12,38 +12,38 @@ This aims to fill in the missing service code, and enable [CECTool](https://gith
 When it is more complete it should be added into libctru, but in the meantime this will do.
 
 ## Supported Functions
-- **cecd:u**
-    - Open
-    - Read
-    - ReadMessage
-    - ReadMessageWithHMAC
-    - Write
-    - WriteMessage
-    - WriteMessageWithHMAC
-    - Delete
-    - SetData
-    - ReadData
-    - Start
-    - Stop
-    - GetCecInfoBuffer
-    - GetCecdState
-    - GetCecInfoEventHandle
-    - GetChangeStateEventHandle
-    - OpenAndWrite
-    - OpenAndRead
-    - GetEventLog
-    - GetEventLogStart
+### **cecd:u**
+- Open
+- Read
+- ReadMessage
+- ReadMessageWithHMAC
+- Write
+- WriteMessage
+- WriteMessageWithHMAC
+- Delete
+- SetData
+- ReadData
+- Start
+- Stop
+- GetCecInfoBuffer
+- GetCecdState
+- GetCecInfoEventHandle
+- GetChangeStateEventHandle
+- OpenAndWrite
+- OpenAndRead
+- GetEventLog
+- GetEventLogStart
 
 ## Todo
-- Implement
-    - cecd:ndm
-    - cecd:s/CecSys
-    - CecControl
-    - CecControlSys
-    - MessageId
-    - Message
-    - MessageBox
-    - And whatever else I may still find
+### Implement
+- cecd:ndm
+- cecd:s/CecSys
+- CecControl
+- CecControlSys
+- MessageId
+- Message
+- MessageBox
+- And whatever else I may still find
 
 ## Usage
 `cecdInit()` and `cecdExit()` must be called to initialize and finalize CecControl. They default to using the cecd:u service.
